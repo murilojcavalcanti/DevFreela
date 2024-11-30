@@ -16,7 +16,7 @@ namespace DevFreela.API.ExceptionHandler
 
             httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await httpContext.Response.WriteAsJsonAsync(details, cancellationToken);
-            return true
+            return true;
         }
     }
 }
