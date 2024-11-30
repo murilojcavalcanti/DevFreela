@@ -6,5 +6,11 @@ namespace DevFreela.API.Controllers
     [ApiController]
     public class SkillsControllers:ControllerBase
     {
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            return Ok();
+        }
+
     }
 }

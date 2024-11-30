@@ -11,5 +11,11 @@ namespace DevFreela.API.Controllers
         {
             return Ok();
         }
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            return Ok();
+        }
     }
 }
