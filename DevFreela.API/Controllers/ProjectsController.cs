@@ -8,7 +8,7 @@ namespace DevFreela.API.Controllers
     [ApiController]
     public class ProjectsController:ControllerBase
     {
-        private readonly FreelanceTotalCostConfig _config
+        private readonly FreelanceTotalCostConfig _config;
         public ProjectsController(IOptions<FreelanceTotalCostConfig> opts)
         {
             _config = opts.Value;
