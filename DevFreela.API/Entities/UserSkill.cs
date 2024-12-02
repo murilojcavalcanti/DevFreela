@@ -4,13 +4,13 @@
     {
         public UserSkill(int idUser, int idSkill):base()
         {
-            this.idUser = idUser;
-            this.idSkill = idSkill;
+            IdUser = idUser;
+            IdSkill = idSkill;
         }
 
-        public int idUser { get; private set; }
-        public User Freelancer { get; private set; }
-        public int idSkill { get; private set; }
+        public int IdUser { get; private set; }
+        public User User { get; private set; }
+        public int IdSkill { get; private set; }
         public Skill Skill { get; private set; }
 
     }
