@@ -1,4 +1,7 @@
-﻿using DevFreela.API.Models;
+﻿using DevFreela.API.Models.project;
+using DevFreela.API.Models.projectComments;
+using DevFreela.API.Models.user;
+using DevFreela.API.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -8,11 +11,10 @@ namespace DevFreela.API.Controllers
     [ApiController]
     public class ProjectsController:ControllerBase
     {
-        private readonly FreelanceTotalCostConfig _config;
-        public ProjectsController(IOptions<FreelanceTotalCostConfig> opts)
+        private readonly DevFreelaDbContext _context;
+        public ProjectsController(DevFreelaDbContext context)
         {
-            _config = opts.Value;
-            
+            _context = context;
         }
         //GET api/projects?serach=crm
         [HttpGet]
@@ -30,12 +32,8 @@ namespace DevFreela.API.Controllers
 
         //POST api/projects
         [HttpPost]
-        public IActionResult Post(CreateInputModel model)
+        public IActionResult Post(CreateProjectInputModel model)
         {
-            if (model.TotalCost < _config.Minimum || model.TotalCost > _config.Maxmum)
-            {
-                return BadRequest();
-            }
             return CreatedAtAction(nameof(GetById), new {id=1},model);
         }
 
