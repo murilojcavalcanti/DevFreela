@@ -1,15 +1,13 @@
 ﻿namespace DevFreela.API.Entities
 {
-    public class Skill
+    public class Skill:BaseEntity
     {
-        public Skill(string description)
+        public Skill(string description):base()
         {
             Description = description;
         }
         public string Description { get; private set; }
 
-
-        public int IdFrelancer { get; private set; }
-
+        public List<UserSkill> UserSkills { get; private set; }
     }
 }
