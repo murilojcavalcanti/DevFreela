@@ -1,4 +1,4 @@
-﻿namespace DevFreela.API.Models
+﻿namespace DevFreela.API.Models.projectComments
 {
     public class CreateProjectCommentInputModel
     {
