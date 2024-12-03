@@ -4,11 +4,9 @@ namespace DevFreela.API.Entities
 {
     public class Project:BaseEntity
     {
-        public Project()
-        {
-            
-        }
-        public Project(string title, string description, int idClient, int idFreelancer,  decimal totalCost) : base()
+        public Project() {   }
+        public Project(string title, string description, int idClient, int idFreelancer,  decimal totalCost)
+            : base()
         {
             Title = title;
             Description = description;

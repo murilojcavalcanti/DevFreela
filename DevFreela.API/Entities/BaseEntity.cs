@@ -2,7 +2,6 @@
 {
     public class BaseEntity
     {
-
         public BaseEntity()
         {
             CreatedAt = DateTime.Now;
