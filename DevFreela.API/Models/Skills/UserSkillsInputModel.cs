@@ -2,6 +2,6 @@
 {
     public class UserSkillsInputModel
     {
-
+        public List<int> SkillIds { get;set; }
     }
 }
