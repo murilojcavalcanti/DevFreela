@@ -24,7 +24,7 @@ namespace DevFreela.API.Controllers
             User user = model.ToEntity();
             _context.Users.Add(user);
             _context.SaveChanges();
-            return Ok();
+            return Ok(user);
         }
 
         [HttpGet]
@@ -43,7 +43,7 @@ namespace DevFreela.API.Controllers
                 .Include(u=>u.Skills)
                 .ThenInclude(u=>u.Skill)
                 .SingleOrDefault(u=>u.Id==id);
-            return Ok();
+            return Ok(user);
         }
 
         [HttpPost("{id}/skills")]
@@ -51,7 +51,7 @@ namespace DevFreela.API.Controllers
         {
             var UserSkills = model.SkillIds.Select(s => new UserSkill(id, s)).ToList();
             _context.UserSkills.AddRange(UserSkills);
-            return NoContent();
+            return Ok();
         }
     }
 }
