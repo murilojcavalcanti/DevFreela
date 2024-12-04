@@ -30,7 +30,11 @@ namespace DevFreela.API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok();
+            var users = _context.Users
+                .Include(u => u.Skills)
+                .ThenInclude(u => u.Skill).ToList();
+            
+            return Ok(users);
         }
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
