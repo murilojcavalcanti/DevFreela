@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<DevFreelaDbContext>(o=>o.UseInMemoryDatabase("DevFreelaDb"));
+string conString = builder.Configuration.GetConnectionString("DevfreelaCs");
+builder.Services.AddDbContext<DevFreelaDbContext>(opts=>opts.UseSqlServer(conString));
 //Configuranco o uso pelo appsettings
 builder.Services.Configure<FreelanceTotalCostConfig>(builder.Configuration.GetSection("FreelanceTotalCostConfig"));
 builder.Services.AddControllers();
