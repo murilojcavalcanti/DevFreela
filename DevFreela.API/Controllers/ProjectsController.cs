@@ -21,7 +21,7 @@ namespace DevFreela.API.Controllers
 
         //GET api/projects?serach=crm
         [HttpGet]
-        public IActionResult GetAll(string search = "",int page =0,int size=1)
+        public IActionResult GetAll(string search = "",int page =0,int size=5)
         {
             var result= _projectService.GetAll(search,page,size);
             if (!result.IsSuccess) return BadRequest(result.Message); 
