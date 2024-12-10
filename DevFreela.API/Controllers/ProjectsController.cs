@@ -1,10 +1,7 @@
 ﻿using DevFreela.Infrastructure.Models.projectComments;
-using DevFreela.Core.Entities;
-using DevFreela.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using DevFreela.Application.Models.project;
-using DevFreela.Application.Services;
+using DevFreela.Application.Services.ProjectServices;
 
 namespace DevFreela.API.Controllers
 {
