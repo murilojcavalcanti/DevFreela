@@ -1,8 +1,12 @@
-using DevFreela.API.Models.user;
-using DevFreela.API.Persistence;
+using DevFreela.Application;
+using DevFreela.Infrastructure.Models.user;
+using DevFreela.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Adicionando module para realizar as injeções de dependencia de serviços
+builder.Services.AddAplication();
 
 // Add services to the container.
 string conString = builder.Configuration.GetConnectionString("DevfreelaCs");
