@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Services.UserServices
 {
-    internal class UserService : IUserService
+    public class UserService : IUserService
     {
         private readonly DevFreelaDbContext _context;
 

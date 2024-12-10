@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Services.UserServices
 {
-    internal interface IUserService
+    public interface IUserService
     {
         ResultViewModel<int> Insert(CreateUserInputModel model);
         ResultViewModel<List<UserViewModel>> GetAll(string search = "",int size = 5,int page = 0);
