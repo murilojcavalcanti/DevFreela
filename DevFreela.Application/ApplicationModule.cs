@@ -1,4 +1,4 @@
-﻿using DevFreela.Application.Services;
+﻿using DevFreela.Application.Services.Project;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
