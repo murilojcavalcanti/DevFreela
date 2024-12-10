@@ -1,6 +1,6 @@
-﻿using DevFreela.API.Entities;
-using DevFreela.API.Models.Skills;
-using DevFreela.API.Persistence;
+﻿using DevFreela.Infrastructure.Models.Skills;
+using DevFreela.Infrastructure.Persistence;
+using DevFreela.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevFreela.API.Controllers
