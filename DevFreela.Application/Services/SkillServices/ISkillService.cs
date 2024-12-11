@@ -11,7 +11,7 @@ namespace DevFreela.Application.Services.SkillServices
 {
     public interface ISkillService
     {
-        ResultViewModel<int> Insert(CreateSkillInputModel);
+        ResultViewModel<int> Insert(CreateSkillInputModel model);
         ResultViewModel<List<SkillViewModel>> GetAll();
         public ResultViewModel<SkillViewModel> GetById(int id);
 
