@@ -1,12 +1,7 @@
-﻿using DevFreela.Application.Services.Project;
-using DevFreela.Application.Services.ProjectServices;
+﻿using DevFreela.Application.Services.ProjectServices;
+using DevFreela.Application.Services.SkillServices;
 using DevFreela.Application.Services.UserServices;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DevFreela.Application
 {
@@ -27,6 +22,7 @@ namespace DevFreela.Application
         {
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IUserService,UserService>();
+            services.AddScoped<ISkillService,SkillService>();
             return services;
         }
     }
