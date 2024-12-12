@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Services.Commands.CommandsProject.InsertCommentProject
 {
-    internal class InsertCommentProjectHandler : IRequestHandler<InsertCommentProjectCommand, ResultViewModel>
+    public class InsertCommentProjectHandler : IRequestHandler<InsertCommentProjectCommand, ResultViewModel>
     {
 
         private readonly DevFreelaDbContext _context;

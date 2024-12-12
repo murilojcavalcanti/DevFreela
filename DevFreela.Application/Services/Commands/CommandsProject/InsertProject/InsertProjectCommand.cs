@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Services.Commands.CommandsProject.InsertProject
 {
-    internal class InsertProjectCommand:IRequest<ResultViewModel<int>>
+    public class InsertProjectCommand:IRequest<ResultViewModel<int>>
     {
 
         public string Title { get; set; }
