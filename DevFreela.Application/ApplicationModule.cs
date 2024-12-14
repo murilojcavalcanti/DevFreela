@@ -2,7 +2,6 @@
 using DevFreela.Application.Services.Commands.CommandsProject.InsertCommentProject;
 using DevFreela.Application.Services.Commands.CommandsProject.InsertProject;
 using DevFreela.Application.Services.Commands.CommandsProject.ValidateCommandsProject;
-using DevFreela.Application.Services.ProjectServices;
 using DevFreela.Application.Services.SkillServices;
 using DevFreela.Application.Services.UserServices;
 using MediatR;
@@ -23,7 +22,6 @@ namespace DevFreela.Application
 
         private static IServiceCollection AddServices(this IServiceCollection services) 
         {
-            services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IUserService,UserService>();
             services.AddScoped<ISkillService,SkillService>();
             return services;
