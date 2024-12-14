@@ -1,7 +1,4 @@
-﻿using DevFreela.Infrastructure.Models.projectComments;
-using Microsoft.AspNetCore.Mvc;
-using DevFreela.Application.Models.project;
-using DevFreela.Application.Services.ProjectServices;
+﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using DevFreela.Application.Services.Queries.QueriesProject.GetAllProjects;
 using DevFreela.Application.Services.Queries.QueriesProject.GetbyIdProjects;
@@ -18,7 +15,6 @@ namespace DevFreela.API.Controllers
     [ApiController]
     public class ProjectsController:ControllerBase
     {
-        private readonly IProjectService _projectService;
         private readonly IMediator _mediator;
 
         public ProjectsController(IMediator mediator)
@@ -43,7 +39,7 @@ namespace DevFreela.API.Controllers
         {
             var query = new GetbyIdQuery(id);
             var result = await _mediator.Send(query);
-            //if (!result.IsSuccess) return BadRequest(result.Message);
+            if (!result.IsSuccess) return BadRequest(result.Message);
             return Ok(result);
         }
 
