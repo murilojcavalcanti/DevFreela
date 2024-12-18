@@ -1,4 +1,5 @@
 using DevFreela.Application;
+using DevFreela.Infrastructure;
 using DevFreela.Infrastructure.Models.user;
 using DevFreela.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -6,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 //Adicionando module para realizar as injeções de dependencia de serviços
-builder.Services.AddAplication();
+builder.Services
+    .AddAplication()
+    .AddInfrastructure(builder.Configuration);
 
 // Add services to the container.
-string conString = builder.Configuration.GetConnectionString("DevfreelaCs");
-builder.Services.AddDbContext<DevFreelaDbContext>(opts=>opts.UseSqlServer(conString));
 //Configuranco o uso pelo appsettings
 builder.Services.Configure<FreelanceTotalCostConfig>(builder.Configuration.GetSection("FreelanceTotalCostConfig"));
 builder.Services.AddControllers();
