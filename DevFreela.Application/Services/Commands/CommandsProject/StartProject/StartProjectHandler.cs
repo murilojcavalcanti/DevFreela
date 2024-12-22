@@ -1,34 +1,27 @@
 ﻿using DevFreela.Application.Models;
 using DevFreela.Core.Entities;
+using DevFreela.Core.Repositories.ProjectRepositories;
 using DevFreela.Infrastructure.Persistence;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DevFreela.Application.Services.Commands.CommandsProject.StartProject
 {
     public class StartProjectHandler : IRequestHandler<StartProjectCommand, ResultViewModel>
     {
-        private readonly DevFreelaDbContext _context;
+        private readonly IProjectRepository _repository;
 
-        public StartProjectHandler(DevFreelaDbContext context)
+        public StartProjectHandler(IProjectRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<ResultViewModel> Handle(StartProjectCommand request, CancellationToken cancellationToken)
         {
-            Project project = await _context.Projects.SingleOrDefaultAsync(p => p.Id == request.Id);
+            Project project = await _repository.GetById(request.Id);
             if (project is null) return ResultViewModel.Error("Projeto não existe");
 
             project.Start();
-            
-            _context.Projects.Update(project);
-            _context.SaveChangesAsync();
+            await _repository.Update(project);
             
             return ResultViewModel.Success();
 
