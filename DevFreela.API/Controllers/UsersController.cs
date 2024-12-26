@@ -6,47 +6,83 @@ using DevFreela.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DevFreela.Application.Services.UserServices;
+using MediatR;
+using DevFreela.Application.Services.Commands.CommandUser.InsertUser;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using DevFreela.Application.Services.Commands.CommandUser.InsertUserSkill;
+using DevFreela.Application.Services.Commands.CommandUser.UpdateUser;
+using DevFreela.Application.Services.Commands.CommandUser.DeleteUser;
+using DevFreela.Application.Services.Commands.CommandUser.DeleteUserSkill;
+using DevFreela.Application.Services.Queries.QueriesUser.GetByIdUser;
+using DevFreela.Application.Services.Queries.QueriesProject.GetAllProjects;
+using DevFreela.Application.Services.Queries.QueriesUser.GetAllUsers;
 namespace DevFreela.API.Controllers
 {
     [Controller]
     [Route("api/users")]
     public class UsersController:ControllerBase
     {
-        private readonly IUserService _service;
+        private readonly IMediator _mediator;
 
-        public UsersController(IUserService service)
+        public UsersController(IMediator mediator)
         {
-            _service = service;
+            _mediator = mediator;
         }
 
         [HttpPost]
-        public IActionResult Post(CreateUserInputModel model)
+        public async Task<IActionResult> Post(InsertUserCommand command)
         {
-            var result = _service.Insert(model);
+            var result = await _mediator.Send(command);
             if(!result.IsSuccess) return BadRequest(result.Data);
 
-            return CreatedAtAction(nameof(GetById), new { id = result.Data }, model);
+            return CreatedAtAction(nameof(GetById), new { id = result.Data }, command);
         }
 
         [HttpGet]
-        public IActionResult GetAll(string search = "", int size = 5, int page =0 )
+        public async Task<IActionResult> GetAll()
         {
-            var result = _service.GetAll(search,size,page);
+            var query = new GetAllUsersQuery();
+            var result = await _mediator.Send(query);
             if (!result.IsSuccess) return NotFound(result.Data);
             return Ok(result);
         }
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-           var result = _service.GetById(id);
+            var query = new GetByIdUserQuery(id);
+           var result = await _mediator.Send(query);
             if (!result.IsSuccess) return NotFound(result.Data);
             return Ok(result);
         }
 
         [HttpPost("{id}/skills")]
-        public IActionResult PostSkills(int id, UserSkillsInputModel model)
+        public async Task<IActionResult> PostSkills(InsertUserSkillCommand command)
         {
-            var result = _service.InsertSkills(id,model);
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess) return BadRequest(result.Message);
+            return Ok(result);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess) return BadRequest(result.Message);
+            return Ok(result);
+        }
+        
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser(DeleteUserCommand command)
+        {
+            var result = await _mediator.Send(command); 
+            if (!result.IsSuccess) return BadRequest(result.Message);
+            return Ok(result);
+        }
+        
+        [HttpDelete("DeleteUserSkill")]
+        public async Task<IActionResult> DeleteUserSkill(DeleteUserSkillCommand command)
+        {
+            var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result.Message);
             return Ok(result);
         }
