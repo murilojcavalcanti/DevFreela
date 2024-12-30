@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Services.Queries.QueriesSkills.GetAllSkils
 {
-    public class GetAllSkillQuery : IRequest<ResultViewModel<List<SkillViewModel>>
+    public class GetAllSkillQuery : IRequest<ResultViewModel<List<SkillViewModel>>>
     {
         
     }

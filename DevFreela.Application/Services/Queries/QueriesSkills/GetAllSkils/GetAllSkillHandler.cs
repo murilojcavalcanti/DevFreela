@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Services.Queries.QueriesSkills.GetAllSkils
 {
-    public class GetAllUserHandler : IRequestHandler<GetAllSkillQuery, ResultViewModel<List<SkillViewModel>>
+    public class GetAllUserHandler : IRequestHandler<GetAllSkillQuery, ResultViewModel<List<SkillViewModel>>>
     {
         private readonly DevFreelaDbContext _context;
 
