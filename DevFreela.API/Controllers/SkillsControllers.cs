@@ -3,6 +3,11 @@ using DevFreela.Infrastructure.Persistence;
 using DevFreela.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 using DevFreela.Application.Services.SkillServices;
+using MediatR;
+using DevFreela.Application.Services.Queries.QueriesProject.GetAllProjects;
+using DevFreela.Application.Services.Queries.QueriesProject.GetbyIdProjects;
+using DevFreela.Application.Services.Commands.CommandSkill.InsertSkill;
+using DevFreela.Application.Services.Commands.CommandSkill.DeleteSkill;
 
 namespace DevFreela.API.Controllers
 {
@@ -11,34 +16,44 @@ namespace DevFreela.API.Controllers
     public class SkillsControllers:ControllerBase
     {
         private readonly SkillService _service;
+        private readonly IMediator _mediator;
 
-        public SkillsControllers(SkillService service)
+        public SkillsControllers(IMediator mediator)
         {
-            _service = service;
+            _mediator = mediator;
         }
 
         //GET api/skills
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(string search, int size, int page)
         {
-            var  result = _service.GetAll();
+            var query = new GetAllProjectQuery(search,size,page);
+            var  result = _mediator.Send(query);
             return Ok(result);
         }
         //GET api/skills/{id}
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var result = _service.GetById(id);
+            var query = new GetbyIdQuery(id);
+            var result = _mediator.Send(query);
             return Ok(result);
         }
         //POST api/skills
         [HttpPost]
-        public IActionResult Post(CreateSkillInputModel model)
+        public IActionResult Post(InsertSkillCommand Command)
         {
-            var result = _service.Insert(model);
-            return CreatedAtAction(nameof(GetById), new { id=result.Data}, model);
+            var result = _mediator.Send(Command);
+            return CreatedAtAction(nameof(GetById), new { id=result.Id}, result);
         }
 
+        [HttpPost]
+        public IActionResult DeleteSkill(DeleteSkillCommand command)
+        {
+            var result = _mediator.Send(command);
+            return Ok(result);
+
+        }
 
     }
 }
