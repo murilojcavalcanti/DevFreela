@@ -1,10 +1,12 @@
 ﻿using DevFreela.Application.Models;
+using DevFreela.Application.Services.AuthServices;
 using DevFreela.Application.Services.Commands.CommandsProject.InsertCommentProject;
 using DevFreela.Application.Services.Commands.CommandsProject.InsertProject;
 using DevFreela.Application.Services.Commands.CommandsProject.ValidateCommandsProject;
 using DevFreela.Application.Services.SkillServices;
 using DevFreela.Application.Services.UserServices;
 using DevFreela.Application.Validators.ValidatorsProject;
+using DevFreela.Core.Services.Auth;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -20,7 +22,8 @@ namespace DevFreela.Application
         {
             services.AddServices()
                 .AddHandlers()
-                .AddValidation();
+                .AddValidation()
+                .AddAuth();
             return services;
         }
 
@@ -43,6 +46,13 @@ namespace DevFreela.Application
             sevices.AddFluentValidationAutoValidation()
                 .AddValidatorsFromAssemblyContaining<InsertProjectCommand>();
                 return sevices;
+        }
+
+
+        public static IServiceCollection AddAuth( this IServiceCollection service)
+        {
+            service.AddScoped<IAuthService, AuthService>();
+            return service;
         }
     }
 }
