@@ -24,7 +24,7 @@ namespace DevFreela.Application.Services.Commands.CommandUser.UpdateUser
         {
             User user = await _context.Users.SingleOrDefaultAsync(u => u.Id == request.UserId);
             if (user == null) return ResultViewModel.Error("Usuário Inexistente ou Id Incorreto");
-            user.Update(request.FullName,request.Email,request.BirthDate);
+            user.Update(request.FullName,request.Email,request.BirthDate,request.Password,request.Password);
             _context.Users.Update(user);
             _context.SaveChanges();
             return ResultViewModel.Success();
