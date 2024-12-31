@@ -20,17 +20,9 @@ namespace DevFreela.Application
     {
         public static IServiceCollection AddAplication(this IServiceCollection services)
         {
-            services.AddServices()
-                .AddHandlers()
+            services.AddHandlers()
                 .AddValidation()
                 .AddAuth();
-            return services;
-        }
-
-        private static IServiceCollection AddServices(this IServiceCollection services) 
-        {
-            services.AddScoped<IUserService,UserService>();
-            services.AddScoped<ISkillService,SkillService>();
             return services;
         }
 
