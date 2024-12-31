@@ -16,6 +16,7 @@ using DevFreela.Application.Services.Commands.CommandUser.DeleteUserSkill;
 using DevFreela.Application.Services.Queries.QueriesUser.GetByIdUser;
 using DevFreela.Application.Services.Queries.QueriesProject.GetAllProjects;
 using DevFreela.Application.Services.Queries.QueriesUser.GetAllUsers;
+using DevFreela.Application.Services.Commands.CommandUser.LoginUser;
 namespace DevFreela.API.Controllers
 {
     [Controller]
@@ -81,6 +82,13 @@ namespace DevFreela.API.Controllers
         
         [HttpDelete("DeleteUserSkill")]
         public async Task<IActionResult> DeleteUserSkill(DeleteUserSkillCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess) return BadRequest(result.Message);
+            return Ok(result);
+        }
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginUserCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result.Message);
