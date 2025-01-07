@@ -39,7 +39,7 @@ namespace DevFreela.Application.Services.AuthServices
             return tokenString;
          }
 
-        string ComputeSha256Hash(string password)
+        public  string ComputeSha256Hash(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
             {
