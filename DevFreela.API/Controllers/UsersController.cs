@@ -1,20 +1,11 @@
-﻿
-using DevFreela.Infrastructure.Models.Skills;
-using DevFreela.Infrastructure.Models.user;
-using DevFreela.Infrastructure.Persistence;
-using DevFreela.Core.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DevFreela.Application.Services.UserServices;
+﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using DevFreela.Application.Services.Commands.CommandUser.InsertUser;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using DevFreela.Application.Services.Commands.CommandUser.InsertUserSkill;
 using DevFreela.Application.Services.Commands.CommandUser.UpdateUser;
 using DevFreela.Application.Services.Commands.CommandUser.DeleteUser;
 using DevFreela.Application.Services.Commands.CommandUser.DeleteUserSkill;
 using DevFreela.Application.Services.Queries.QueriesUser.GetByIdUser;
-using DevFreela.Application.Services.Queries.QueriesProject.GetAllProjects;
 using DevFreela.Application.Services.Queries.QueriesUser.GetAllUsers;
 using DevFreela.Application.Services.Commands.CommandUser.LoginUser;
 namespace DevFreela.API.Controllers
@@ -31,7 +22,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(InsertUserCommand command)
+        public async Task<IActionResult> Post([FromBody]InsertUserCommand command)
         {
             var result = await _mediator.Send(command);
             if(!result.IsSuccess) return BadRequest(result.Data);
@@ -65,7 +56,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result.Message);
@@ -73,7 +64,7 @@ namespace DevFreela.API.Controllers
         }
         
         [HttpDelete]
-        public async Task<IActionResult> DeleteUser(DeleteUserCommand command)
+        public async Task<IActionResult> DeleteUser([FromBody] DeleteUserCommand command)
         {
             var result = await _mediator.Send(command); 
             if (!result.IsSuccess) return BadRequest(result.Message);
@@ -81,14 +72,14 @@ namespace DevFreela.API.Controllers
         }
         
         [HttpDelete("DeleteUserSkill")]
-        public async Task<IActionResult> DeleteUserSkill(DeleteUserSkillCommand command)
+        public async Task<IActionResult> DeleteUserSkill([FromBody] DeleteUserSkillCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result.Message);
             return Ok(result);
         }
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(LoginUserCommand command)
+        public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result.Message);
