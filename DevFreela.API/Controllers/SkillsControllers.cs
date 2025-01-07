@@ -1,8 +1,4 @@
-﻿using DevFreela.Infrastructure.Models.Skills;
-using DevFreela.Infrastructure.Persistence;
-using DevFreela.Core.Entities;
-using Microsoft.AspNetCore.Mvc;
-using DevFreela.Application.Services.SkillServices;
+﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using DevFreela.Application.Services.Queries.QueriesProject.GetAllProjects;
 using DevFreela.Application.Services.Queries.QueriesProject.GetbyIdProjects;
@@ -15,7 +11,6 @@ namespace DevFreela.API.Controllers
     [ApiController]
     public class SkillsControllers:ControllerBase
     {
-        private readonly SkillService _service;
         private readonly IMediator _mediator;
 
         public SkillsControllers(IMediator mediator)
@@ -47,7 +42,7 @@ namespace DevFreela.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id=result.Id}, result);
         }
 
-        [HttpPost]
+        [HttpPost("/DeleSkill")]
         public IActionResult DeleteSkill(DeleteSkillCommand command)
         {
             var result = _mediator.Send(command);
