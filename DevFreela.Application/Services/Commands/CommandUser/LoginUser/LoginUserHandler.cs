@@ -16,9 +16,10 @@ namespace DevFreela.Application.Services.Commands.CommandUser.LoginUser
     {
         private readonly IAuthService _authService;
         private readonly IMediator _mediator;
-        public LoginUserHandler(IAuthService authService)
+        public LoginUserHandler(IAuthService authService, IMediator mediator)
         {
             _authService = authService;
+            _mediator = mediator;
         }
 
         public async Task<ResultViewModel<LoginUserViewModel>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
@@ -26,9 +27,12 @@ namespace DevFreela.Application.Services.Commands.CommandUser.LoginUser
             var query = new GetByEmailUserQuery(request.Email);
             var user = _mediator.Send(query);
             var passwordHash = _authService.ComputeSha256Hash(request.Password);
+
             if (user.Result.Data == null|| user.Result.Data.Password != passwordHash) return ResultViewModel<LoginUserViewModel>.Error("Email ou senha incorretos");
+            
             var token = _authService.GenerateToken(user.Result.Data.Email, user.Result.Data.Role);
             var loginUserViewModel = new LoginUserViewModel(user.Result.Data.Email, token);
+            
             return ResultViewModel<LoginUserViewModel>.Success(loginUserViewModel);
         }
     }
