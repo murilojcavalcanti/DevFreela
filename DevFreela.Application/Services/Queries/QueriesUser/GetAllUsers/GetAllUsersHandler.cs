@@ -28,7 +28,6 @@ namespace DevFreela.Application.Services.Queries.QueriesUser.GetAllUsers
             var users = await  _context.Users
             .Include(u => u.Skills)
             .ThenInclude(u => u.Skill)
-            .Where(u=>u.IsDeleted==false)
             .ToListAsync();
             List<UserViewModel> result = users.Select(u => UserViewModel.FromEntity(u)).ToList();
             return ResultViewModel<List<UserViewModel>>.Success(result);

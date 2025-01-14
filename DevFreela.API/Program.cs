@@ -3,13 +3,12 @@ using DevFreela.Infrastructure;
 using DevFreela.Infrastructure.Models.user;
 using DevFreela.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //Adicionando module para realizar as injeções de dependencia de serviços
 builder.Services
-    .AddAplication(builder.Configuration)
+    .AddAplication()
     .AddInfrastructure(builder.Configuration);
 
 // Add services to the container.
@@ -18,15 +17,7 @@ builder.Services.Configure<FreelanceTotalCostConfig>(builder.Configuration.GetSe
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name ="Authorization",
-        Type = SecuritySchemeType.ApiKey
-
-    });
-});
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -40,7 +31,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-app.UseAuthentication();
 
 app.MapControllers();
 
