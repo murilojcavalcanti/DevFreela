@@ -7,7 +7,11 @@ using DevFreela.Core.Services.Auth;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace DevFreela.Application
 {
@@ -15,11 +19,11 @@ namespace DevFreela.Application
     //Ao inves de adicionar todos os sevices do projeto na classe program, este arquivo será responsavel por isso.
     public static class ApplicationModule
     {
-        public static IServiceCollection AddAplication(this IServiceCollection services)
+        public static IServiceCollection AddAplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddHandlers()
                 .AddValidation()
-                .AddAuth();
+                .AddAuth(configuration);
             return services;
         }
 
@@ -38,9 +42,23 @@ namespace DevFreela.Application
         }
 
 
-        public static IServiceCollection AddAuth( this IServiceCollection service)
+        public static IServiceCollection AddAuth( this IServiceCollection service, IConfiguration configuration)
         {
             service.AddScoped<IAuthService, AuthService>();
+            service.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opts =>
+            {
+                opts.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidAudience = configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                };
+            });
             return service;
         }
     }
