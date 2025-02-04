@@ -4,7 +4,7 @@ using MediatR;
 
 namespace DevFreela.Application.Services.Commands.CommandUser.LoginUser
 {
-    public class LoginUserCommand:IRequest<ResultViewModel<LoginUserViewModel>>
+    public class LoginUserCommand:IRequest<ResultViewModel<loginViewModel>>
     {
         public LoginUserCommand(string email, string password)
         {

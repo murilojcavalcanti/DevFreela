@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Services.Commands.CommandUser.LoginUser
 {
-    public class LoginUserHandler : IRequestHandler<LoginUserCommand, ResultViewModel<LoginUserViewModel>>
+    public class LoginUserHandler : IRequestHandler<LoginUserCommand, ResultViewModel<loginViewModel>>
     {
         private readonly IAuthService _authService;
         private readonly IMediator _mediator;
@@ -22,18 +22,18 @@ namespace DevFreela.Application.Services.Commands.CommandUser.LoginUser
             _mediator = mediator;
         }
 
-        public async Task<ResultViewModel<LoginUserViewModel>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task<ResultViewModel<loginViewModel>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var query = new GetByEmailUserQuery(request.Email);
             var user = _mediator.Send(query);
-            var passwordHash = _authService.ComputeSha256Hash(request.Password);
+            var passwordHash = _authService.ComputeHash(request.Password);
 
-            if (user.Result.Data == null|| user.Result.Data.Password != passwordHash) return ResultViewModel<LoginUserViewModel>.Error("Email ou senha incorretos");
+            if (user.Result.Data == null|| user.Result.Data.Password != passwordHash) return ResultViewModel<loginViewModel>.Error("Email ou senha incorretos");
             
             var token = _authService.GenerateToken(user.Result.Data.Email, user.Result.Data.Role);
-            var loginUserViewModel = new LoginUserViewModel(user.Result.Data.Email, token);
+            var loginUserViewModel = new loginViewModel(token);
             
-            return ResultViewModel<LoginUserViewModel>.Success(loginUserViewModel);
+            return ResultViewModel<loginViewModel>.Success(loginUserViewModel);
         }
     }
 }
