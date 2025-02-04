@@ -9,6 +9,6 @@ namespace DevFreela.Core.Services.Auth
     public interface IAuthService
     {
         public string GenerateToken(string email, string Role);
-        public string ComputeSha256Hash(string password);
+        public string ComputeHash(string password);
     }
 }
