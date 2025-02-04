@@ -20,7 +20,7 @@ namespace DevFreela.API.Controllers
 
         //GET api/skills
         [HttpGet]
-        public IActionResult GetAll(string search, int size, int page)
+        public IActionResult GetAll(string search="", int size=5, int page=0)
         {
             var query = new GetAllProjectQuery(search,size,page);
             var  result = _mediator.Send(query);

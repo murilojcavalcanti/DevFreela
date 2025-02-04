@@ -8,11 +8,13 @@ using DevFreela.Application.Services.Commands.CommandsProject.DeleteProject;
 using DevFreela.Application.Services.Commands.CommandsProject.StartProject;
 using DevFreela.Application.Services.Commands.CommandsProject.CompleteProject;
 using DevFreela.Application.Services.Commands.CommandsProject.InsertCommentProject;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DevFreela.API.Controllers
 {
     [Route("api/projects")]
     [ApiController]
+    [Authorize]
     public class ProjectsController:ControllerBase
     {
         private readonly IMediator _mediator;
@@ -25,6 +27,7 @@ namespace DevFreela.API.Controllers
 
         //GET api/projects?serach=crm
         [HttpGet]
+        [Authorize(Roles ="freelancer, client")]
         public async Task<IActionResult> GetAll(string search = "",int page =0,int size=5)
         {
             var query = new GetAllProjectQuery(search,size,page);

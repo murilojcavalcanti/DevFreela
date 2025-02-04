@@ -8,10 +8,12 @@ using DevFreela.Application.Services.Commands.CommandUser.DeleteUserSkill;
 using DevFreela.Application.Services.Queries.QueriesUser.GetByIdUser;
 using DevFreela.Application.Services.Queries.QueriesUser.GetAllUsers;
 using DevFreela.Application.Services.Commands.CommandUser.LoginUser;
+using Microsoft.AspNetCore.Authorization;
 namespace DevFreela.API.Controllers
 {
     [Controller]
     [Route("api/users")]
+    [Authorize]
     public class UsersController:ControllerBase
     {
         private readonly IMediator _mediator;
@@ -22,6 +24,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody]InsertUserCommand command)
         {
             var result = await _mediator.Send(command);
@@ -79,6 +82,7 @@ namespace DevFreela.API.Controllers
             return Ok(result);
         }
         [HttpPost("Login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
         {
             var result = await _mediator.Send(command);
