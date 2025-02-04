@@ -24,7 +24,7 @@ namespace DevFreela.Application.Services.Commands.CommandUser.InsertUser
 
         public async Task<ResultViewModel<int>> Handle(InsertUserCommand request, CancellationToken cancellationToken)
         {
-            var passwordHash = _authService.ComputeSha256Hash(request.Password);
+            var passwordHash = _authService.ComputeHash(request.Password);
             User user = request.ToEntity();
             user.Password = passwordHash;
             await _context.Users.AddAsync(user);
