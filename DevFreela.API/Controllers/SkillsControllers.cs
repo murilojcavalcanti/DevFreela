@@ -5,6 +5,8 @@ using DevFreela.Application.Services.Queries.QueriesProject.GetbyIdProjects;
 using DevFreela.Application.Services.Commands.CommandSkill.InsertSkill;
 using DevFreela.Application.Services.Commands.CommandSkill.DeleteSkill;
 using DevFreela.Application.Models.Skills;
+using DevFreela.Application.Services.Queries.QueriesSkills.GetAllSkils;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DevFreela.API.Controllers
 {
@@ -21,9 +23,10 @@ namespace DevFreela.API.Controllers
 
         //GET api/skills
         [HttpGet]
-        public IActionResult GetAll([FromBody]string search="", int size=5, int page=0)
+        [Authorize]
+        public IActionResult GetAll()
         {
-            var query = new GetAllProjectQuery(search,size,page);
+            var query = new GetAllSkillQuery();
             var  result = _mediator.Send(query);
             return Ok(result);
         }

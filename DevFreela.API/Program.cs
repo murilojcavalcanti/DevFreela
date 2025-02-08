@@ -18,15 +18,7 @@ builder.Services.Configure<FreelanceTotalCostConfig>(builder.Configuration.GetSe
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name ="Authorization",
-        Type = SecuritySchemeType.ApiKey
-
-    });
-});
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 

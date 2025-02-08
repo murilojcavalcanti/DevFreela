@@ -15,7 +15,7 @@ namespace DevFreela.API.Controllers
 {
     [ApiController]
     [Route("api/projects")]
-    [Authorize]
+    
     public class ProjectsController:ControllerBase
     {
         private readonly IMediator _mediator;
@@ -28,9 +28,10 @@ namespace DevFreela.API.Controllers
 
         //GET api/projects?serach=crm
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromBody]string search = "",int page =0,int size=5)
+        [Authorize(Roles ="client")]
+        public async Task<IActionResult> GetAll()
         {
-            var query = new GetAllProjectQuery(search,size,page);
+            var query = new GetAllProjectQuery();
             var result = await _mediator.Send(query);
             if (!result.IsSuccess) return BadRequest(result.Message); 
             return Ok(result);
@@ -48,12 +49,12 @@ namespace DevFreela.API.Controllers
 
         //POST api/projects
         [HttpPost]
-        [Authorize(Roles = "client")]
         public async Task<IActionResult> Post(InsertProjectCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result.Message);
-            ProjectViewModel viewModel = ProjectViewModel.fromEntity(command.ToEntity())
+            var entity = command.ToEntity();
+            ProjectViewModel viewModel = ProjectViewModel.fromEntity(entity);
             return CreatedAtAction(nameof(GetById), new {id=result.Data},viewModel);
         }
 
