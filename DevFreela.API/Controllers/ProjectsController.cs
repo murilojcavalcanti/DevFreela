@@ -12,8 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace DevFreela.API.Controllers
 {
-    [Route("api/projects")]
     [ApiController]
+    [Route("api/projects")]
     [Authorize]
     public class ProjectsController:ControllerBase
     {
@@ -48,6 +48,7 @@ namespace DevFreela.API.Controllers
 
         //POST api/projects
         [HttpPost]
+        [Authorize(Roles = "client")]
         public async Task<IActionResult> Post(InsertProjectCommand command)
         {
             var result = await _mediator.Send(command);

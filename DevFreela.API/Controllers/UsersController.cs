@@ -34,6 +34,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
             var query = new GetAllUsersQuery();
@@ -66,7 +67,7 @@ namespace DevFreela.API.Controllers
             return Ok(result);
         }
         
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser([FromBody] DeleteUserCommand command)
         {
             var result = await _mediator.Send(command); 
@@ -74,7 +75,7 @@ namespace DevFreela.API.Controllers
             return Ok(result);
         }
         
-        [HttpDelete("DeleteUserSkill")]
+        [HttpDelete("{id}/DeleteUserSkill")]
         public async Task<IActionResult> DeleteUserSkill([FromBody] DeleteUserSkillCommand command)
         {
             var result = await _mediator.Send(command);

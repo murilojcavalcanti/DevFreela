@@ -42,7 +42,7 @@ namespace DevFreela.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id=result.Id}, result);
         }
 
-        [HttpPost("/DeleSkill")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteSkill(DeleteSkillCommand command)
         {
             var result = _mediator.Send(command);
