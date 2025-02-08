@@ -46,14 +46,11 @@ namespace DevFreela.Infrastructure.Persistence.Repositories.ProjectRepositories
             return await _context.Projects.AnyAsync(p=>p.Id==id);
         }
 
-        public async Task<List<Project>> GetAll(string Search,int Page,int Size)
+        public async Task<List<Project>> GetAll()
         {
             var projects = await _context.Projects
                 .Include(p => p.Client)
                 .Include(p => p.Freelancer)
-                .Where(p => !p.IsDeleted && Search == "" || p.Title.Contains(Search))
-                .Skip(Page * Size)
-                .Take(Size)
                 .ToListAsync();
             return projects;
         }

@@ -9,7 +9,7 @@ namespace DevFreela.Core.Repositories.ProjectRepositories
 {
     public interface IProjectRepository
     {
-        Task<List<Project>> GetAll(string Search, int Page, int Size);
+        Task<List<Project>> GetAll();
         Task<Project> GetDetailsById(int id);
         Task<Project> GetById(int id);
         Task<bool> Exists(int id);
