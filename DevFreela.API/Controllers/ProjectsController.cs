@@ -9,6 +9,7 @@ using DevFreela.Application.Services.Commands.CommandsProject.StartProject;
 using DevFreela.Application.Services.Commands.CommandsProject.CompleteProject;
 using DevFreela.Application.Services.Commands.CommandsProject.InsertCommentProject;
 using Microsoft.AspNetCore.Authorization;
+using DevFreela.Application.Models.project;
 
 namespace DevFreela.API.Controllers
 {
@@ -27,8 +28,7 @@ namespace DevFreela.API.Controllers
 
         //GET api/projects?serach=crm
         [HttpGet]
-        [Authorize(Roles ="freelancer, client")]
-        public async Task<IActionResult> GetAll(string search = "",int page =0,int size=5)
+        public async Task<IActionResult> GetAll([FromBody]string search = "",int page =0,int size=5)
         {
             var query = new GetAllProjectQuery(search,size,page);
             var result = await _mediator.Send(query);
@@ -53,8 +53,8 @@ namespace DevFreela.API.Controllers
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result.Message);
-
-            return CreatedAtAction(nameof(GetById), new {id=result.Data},command);
+            ProjectViewModel viewModel = ProjectViewModel.fromEntity(command.ToEntity())
+            return CreatedAtAction(nameof(GetById), new {id=result.Data},viewModel);
         }
 
         // PUT api;projects/123

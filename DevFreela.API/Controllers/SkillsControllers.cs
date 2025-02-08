@@ -4,6 +4,7 @@ using DevFreela.Application.Services.Queries.QueriesProject.GetAllProjects;
 using DevFreela.Application.Services.Queries.QueriesProject.GetbyIdProjects;
 using DevFreela.Application.Services.Commands.CommandSkill.InsertSkill;
 using DevFreela.Application.Services.Commands.CommandSkill.DeleteSkill;
+using DevFreela.Application.Models.Skills;
 
 namespace DevFreela.API.Controllers
 {
@@ -20,7 +21,7 @@ namespace DevFreela.API.Controllers
 
         //GET api/skills
         [HttpGet]
-        public IActionResult GetAll(string search="", int size=5, int page=0)
+        public IActionResult GetAll([FromBody]string search="", int size=5, int page=0)
         {
             var query = new GetAllProjectQuery(search,size,page);
             var  result = _mediator.Send(query);
@@ -39,7 +40,8 @@ namespace DevFreela.API.Controllers
         public IActionResult Post(InsertSkillCommand Command)
         {
             var result = _mediator.Send(Command);
-            return CreatedAtAction(nameof(GetById), new { id=result.Id}, result);
+            SkillViewModel viewModel = SkillViewModel.FromEntity(Command.ToEntity());
+            return CreatedAtAction(nameof(GetById), new { id=result.Id}, viewModel);
         }
 
         [HttpDelete("{id}")]
@@ -47,7 +49,6 @@ namespace DevFreela.API.Controllers
         {
             var result = _mediator.Send(command);
             return Ok(result);
-
         }
 
     }

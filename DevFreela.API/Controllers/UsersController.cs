@@ -9,6 +9,8 @@ using DevFreela.Application.Services.Queries.QueriesUser.GetByIdUser;
 using DevFreela.Application.Services.Queries.QueriesUser.GetAllUsers;
 using DevFreela.Application.Services.Commands.CommandUser.LoginUser;
 using Microsoft.AspNetCore.Authorization;
+using DevFreela.Infrastructure.Models.user;
+using DevFreela.Core.Entities;
 namespace DevFreela.API.Controllers
 {
     [Controller]
@@ -28,9 +30,10 @@ namespace DevFreela.API.Controllers
         public async Task<IActionResult> Post([FromBody]InsertUserCommand command)
         {
             var result = await _mediator.Send(command);
-            if(!result.IsSuccess) return BadRequest(result.Data);
+            if (!result.IsSuccess) return BadRequest(result.Data);
+            UserViewModel viewModel = UserViewModel.FromEntity(command.ToEntity());
 
-            return CreatedAtAction(nameof(GetById), new { id = result.Data }, command);
+            return CreatedAtAction(nameof(GetById), new { id = result.Data }, viewModel);
         }
 
         [HttpGet]
@@ -43,6 +46,7 @@ namespace DevFreela.API.Controllers
             return Ok(result);
         }
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             var query = new GetByIdUserQuery(id);
@@ -82,7 +86,7 @@ namespace DevFreela.API.Controllers
             if (!result.IsSuccess) return BadRequest(result.Message);
             return Ok(result);
         }
-        [HttpPost("Login")]
+        [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
         {
