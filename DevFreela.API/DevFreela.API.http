@@ -1,20 +1,24 @@
-@DevFreela.API_HostAddress = http://localhost:5291
-@JwtToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6InN0cmluZ0BnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJmcmVlbGFuY2VyIiwiZXhwIjoxNzM4NTU0MjUzLCJpc3MiOiJEZXZGcmVlbGEiLCJhdWQiOiJEZXZGcmVlbGFBcHAifQ.6dsCKtcbiKoPj9R803GIE8W8ZjNdyXWW7Ppw83XUehw
-
-
+@DevFreela.API_HostAddress = https://localhost:7198
+@JwtToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6InNhYnJpbmEubWVsby5jbGllbnRAZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJjbGllbnQiLCJleHAiOjE3MzkwNjU0MDYsImlzcyI6IkRldkZyZWVsYSIsImF1ZCI6IkRldkZyZWVsYUFwcCJ9.6G0twHtvZiYLRBfE8NDtbGSuB6TzCfYobXVuYYs7uR4
 
 ### Create a new user freelancer
 POST {{DevFreela.API_HostAddress}}/api/users
 Content-Type: application/json
 
-{
-  "fullName": "John Doe",
-  "email": "xihisa5599@fenxz.com",
-  "birthDate": "1990-01-01",
-  "password": "strongpassword123",
-  "role": "freelancer"
-}
 
+
+### Create a new user client
+
+POST {{DevFreela.API_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "fullName": "Sabrina Melo Client",
+  "email": "sabrina.melo.client@example.com",
+  "birthDate": "1998-04-30",
+  "password": "strongpassword123",
+  "role": "client"
+}
 ### Create a new user client
 
 POST {{DevFreela.API_HostAddress}}/api/users
@@ -26,7 +30,6 @@ Content-Type: application/json
   "birthDate": "1990-01-01",
   "password": "strongpassword123",
   "role": "client"
-}
 
 ### Login as the created freelancer
 PUT {{DevFreela.API_HostAddress}}/api/users/login
@@ -43,6 +46,14 @@ Content-Type: application/json
 
 {
   "email": "john.doe.client@example.com",
+  "password": "strongpassword123"
+}
+### Login as the created client
+POST {{DevFreela.API_HostAddress}}/api/users/login
+Content-Type: application/json
+
+{
+  "email": "sabrina.melo.client@example.com",
   "password": "strongpassword123"
 }
 
