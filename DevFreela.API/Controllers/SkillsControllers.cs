@@ -12,6 +12,7 @@ namespace DevFreela.API.Controllers
 {
     [Route("api/skills")]
     [ApiController]
+    [Authorize]
     public class SkillsControllers:ControllerBase
     {
         private readonly IMediator _mediator;
@@ -32,6 +33,7 @@ namespace DevFreela.API.Controllers
         }
         //GET api/skills/{id}
         [HttpGet("{id}")]
+        [Authorize]
         public IActionResult GetById(int id)
         {
             var query = new GetbyIdQuery(id);
@@ -40,6 +42,7 @@ namespace DevFreela.API.Controllers
         }
         //POST api/skills
         [HttpPost]
+        [Authorize(Roles ="freelacer")]
         public IActionResult Post(InsertSkillCommand Command)
         {
             var result = _mediator.Send(Command);
@@ -48,6 +51,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles ="freelacer")]
         public IActionResult DeleteSkill(DeleteSkillCommand command)
         {
             var result = _mediator.Send(command);

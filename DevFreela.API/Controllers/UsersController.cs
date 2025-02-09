@@ -37,7 +37,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Roles ="Adm")]
         public async Task<IActionResult> GetAll()
         {
             var query = new GetAllUsersQuery();
@@ -46,7 +46,7 @@ namespace DevFreela.API.Controllers
             return Ok(result);
         }
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Adm")]
         public async Task<IActionResult> GetById(int id)
         {
             var query = new GetByIdUserQuery(id);
@@ -56,6 +56,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPost("{id}/skills")]
+        [Authorize(Roles = "freelancer")]
         public async Task<IActionResult> PostSkills(InsertUserSkillCommand command)
         {
             var result = await _mediator.Send(command);
@@ -64,6 +65,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command)
         {
             var result = await _mediator.Send(command);
@@ -72,6 +74,7 @@ namespace DevFreela.API.Controllers
         }
         
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteUser([FromBody] DeleteUserCommand command)
         {
             var result = await _mediator.Send(command); 
