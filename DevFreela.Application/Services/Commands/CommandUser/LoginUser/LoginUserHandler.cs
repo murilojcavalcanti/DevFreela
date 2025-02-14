@@ -2,7 +2,9 @@
 using DevFreela.Application.Models.user;
 using DevFreela.Application.Services.Queries.QueriesUser.GetByEmailUser;
 using DevFreela.Application.Services.Queries.QueriesUser.GetByIdUser;
+using DevFreela.Core.Entities;
 using DevFreela.Core.Services.Auth;
+using DevFreela.Infrastructure.Persistence;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -15,22 +17,21 @@ namespace DevFreela.Application.Services.Commands.CommandUser.LoginUser
     public class LoginUserHandler : IRequestHandler<LoginUserCommand, ResultViewModel<loginViewModel>>
     {
         private readonly IAuthService _authService;
-        private readonly IMediator _mediator;
-        public LoginUserHandler(IAuthService authService, IMediator mediator)
+        private readonly DevFreelaDbContext _context;
+        public LoginUserHandler(IAuthService authService, DevFreelaDbContext context)
         {
             _authService = authService;
-            _mediator = mediator;
+            _context = context;
         }
 
         public async Task<ResultViewModel<loginViewModel>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            var query = new GetByEmailUserQuery(request.Email);
-            var user = _mediator.Send(query);
-            var passwordHash = _authService.ComputeHash(request.Password);
+            User? user = _context.Users.FirstOrDefault(u=>u.Email ==request.Email);
+            string passwordHash = _authService.ComputeHash(request.Password);
 
-            if (user.Result.Data == null|| user.Result.Data.Password != passwordHash) return ResultViewModel<loginViewModel>.Error("Email ou senha incorretos");
+            if (user == null|| user.Password != passwordHash) return ResultViewModel<loginViewModel>.Error("Email ou senha incorretos");
             
-            var token = _authService.GenerateToken(user.Result.Data.Email, user.Result.Data.Role);
+            var token = _authService.GenerateToken(user.Email,user.Id, user.Role);
             var loginUserViewModel = new loginViewModel(token);
             
             return ResultViewModel<loginViewModel>.Success(loginUserViewModel);
