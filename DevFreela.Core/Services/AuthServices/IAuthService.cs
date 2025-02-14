@@ -8,7 +8,7 @@ namespace DevFreela.Core.Services.Auth
 {
     public interface IAuthService
     {
-        public string GenerateToken(string email, string Role);
+        public string GenerateToken(string email, int Id, string Role);
         public string ComputeHash(string password);
     }
 }
