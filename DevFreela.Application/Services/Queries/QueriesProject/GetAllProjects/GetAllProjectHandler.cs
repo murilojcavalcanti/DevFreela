@@ -26,7 +26,7 @@ namespace DevFreela.Application.Services.Queries.QueriesProject.GetAllProjects
 
         public async Task<ResultViewModel<List<ProjectItemViewModel>>> Handle(GetAllProjectQuery request, CancellationToken cancellationToken)
         {
-            var projects = await _repository.GetAll();
+            var projects = await _repository.GetAll(p => p.IdClient == request.UserId);
             List<ProjectItemViewModel> model = projects.Select(p => ProjectItemViewModel.FromEntity(p)).ToList();
             return ResultViewModel<List<ProjectItemViewModel>>.Success(model);
         }
