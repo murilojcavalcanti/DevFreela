@@ -10,6 +10,8 @@ using DevFreela.Application.Services.Commands.CommandsProject.CompleteProject;
 using DevFreela.Application.Services.Commands.CommandsProject.InsertCommentProject;
 using Microsoft.AspNetCore.Authorization;
 using DevFreela.Application.Models.project;
+using System.Security.Claims;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace DevFreela.API.Controllers
 {
@@ -32,7 +34,8 @@ namespace DevFreela.API.Controllers
         [Authorize]
         public async Task<IActionResult> GetAll()
         {
-            var query = new GetAllProjectQuery();
+            int userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var query = new GetAllProjectQuery(userId);
             var result = await _mediator.Send(query);
             if (!result.IsSuccess) return BadRequest(result.Message); 
             return Ok(result);
@@ -43,7 +46,9 @@ namespace DevFreela.API.Controllers
         [Authorize]
         public async Task<IActionResult> GetById(int id)
         {
-            var query = new GetbyIdQuery(id);
+            int userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            
+            var query = new GetbyIdQuery(id,userId);
             var result = await _mediator.Send(query);
             if (!result.IsSuccess) return BadRequest(result.Message);
             return Ok(result);
@@ -66,6 +71,11 @@ namespace DevFreela.API.Controllers
         [Authorize(Roles = "Client")]
         public async Task<IActionResult> PutAsync (UpdateProjectCommand command)
         {
+            int userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            if (command.ClientId != userId)
+            {
+                return Unauthorized("não tem autorização para essa operação");
+            }
             var result = await _mediator.Send(command);
             return Ok(result);
         }

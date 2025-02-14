@@ -11,6 +11,7 @@ using DevFreela.Application.Services.Commands.CommandUser.LoginUser;
 using Microsoft.AspNetCore.Authorization;
 using DevFreela.Infrastructure.Models.user;
 using DevFreela.Core.Entities;
+using System.Security.Claims;
 namespace DevFreela.API.Controllers
 {
     [Controller]
@@ -50,7 +51,7 @@ namespace DevFreela.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var query = new GetByIdUserQuery(id);
-           var result = await _mediator.Send(query);
+            var result = await _mediator.Send(query);
             if (!result.IsSuccess) return NotFound(result.Data);
             return Ok(result);
         }
@@ -68,6 +69,10 @@ namespace DevFreela.API.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command)
         {
+            int userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            if (command.UserId != userId) return Unauthorized("não tem autorização para essa operação");
+
+
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result.Message);
             return Ok(result);
@@ -77,14 +82,24 @@ namespace DevFreela.API.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteUser([FromBody] DeleteUserCommand command)
         {
+            int userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            if (command.Id != userId) return Unauthorized("não tem autorização para essa operação");
+            
             var result = await _mediator.Send(command); 
             if (!result.IsSuccess) return BadRequest(result.Message);
+            
             return Ok(result);
         }
         
         [HttpDelete("{id}/DeleteUserSkill")]
+        [Authorize]
         public async Task<IActionResult> DeleteUserSkill([FromBody] DeleteUserSkillCommand command)
         {
+            int userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            if (command.UserId!=userId)
+            {
+                return Unauthorized("não tem autorização para essa operação");
+            }
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result.Message);
             return Ok(result);
