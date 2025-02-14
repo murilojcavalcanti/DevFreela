@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,11 +47,12 @@ namespace DevFreela.Infrastructure.Persistence.Repositories.ProjectRepositories
             return await _context.Projects.AnyAsync(p=>p.Id==id);
         }
 
-        public async Task<List<Project>> GetAll()
+        public async Task<List<Project>> GetAll(Expression<Func<Project,bool>>predicate)
         {
             var projects = await _context.Projects
                 .Include(p => p.Client)
                 .Include(p => p.Freelancer)
+                .Where(predicate)
                 .ToListAsync();
             return projects;
         }
@@ -62,9 +64,10 @@ namespace DevFreela.Infrastructure.Persistence.Repositories.ProjectRepositories
             return project;
         }
 
-        public async Task<Project> GetDetailsById(int id)
+        public async Task<Project> GetDetailsById(int id, int userId)
         {
             Project? project = await _context.Projects
+                .Where(p=>p.IdClient ==userId)
                 .Include(p => p.Client)
                 .Include(p => p.Freelancer)
                 .SingleOrDefaultAsync(x => x.Id == id);
