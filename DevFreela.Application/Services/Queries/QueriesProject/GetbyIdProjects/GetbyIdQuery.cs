@@ -12,10 +12,11 @@ namespace DevFreela.Application.Services.Queries.QueriesProject.GetbyIdProjects
     public class GetbyIdQuery:IRequest<ResultViewModel<ProjectViewModel>>
     {
         public int Id { get; set; }
-
-        public GetbyIdQuery(int id)
+        public int Userid { get; set; }
+        public GetbyIdQuery(int id, int userid)
         {
             Id = id;
+            Userid = userid;
         }
     }
 }
