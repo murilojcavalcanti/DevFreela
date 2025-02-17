@@ -53,12 +53,11 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles ="freelacer")]
+        [Authorize(Roles ="adm")]
         public IActionResult DeleteSkill(DeleteSkillCommand command)
         {
             var result = _mediator.Send(command);
             return Ok(result);
         }
-
     }
 }

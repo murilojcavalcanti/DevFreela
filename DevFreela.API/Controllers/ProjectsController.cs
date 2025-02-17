@@ -48,7 +48,7 @@ namespace DevFreela.API.Controllers
         {
             int userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             
-            var query = new GetbyIdQuery(id,userId);
+            var query = new GetbyIdProjectsQuery(id,userId);
             var result = await _mediator.Send(query);
             if (!result.IsSuccess) return BadRequest(result.Message);
             return Ok(result);

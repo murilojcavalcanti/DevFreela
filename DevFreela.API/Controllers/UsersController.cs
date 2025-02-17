@@ -96,10 +96,7 @@ namespace DevFreela.API.Controllers
         public async Task<IActionResult> DeleteUserSkill([FromBody] DeleteUserSkillCommand command)
         {
             int userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            if (command.UserId!=userId)
-            {
-                return Unauthorized("não tem autorização para essa operação");
-            }
+            command.UserId = userId;
             var result = await _mediator.Send(command);
             if (!result.IsSuccess) return BadRequest(result.Message);
             return Ok(result);
