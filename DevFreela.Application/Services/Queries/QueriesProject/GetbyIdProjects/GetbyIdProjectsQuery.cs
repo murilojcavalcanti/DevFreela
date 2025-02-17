@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Services.Queries.QueriesProject.GetbyIdProjects
 {
-    public class GetbyIdQuery:IRequest<ResultViewModel<ProjectViewModel>>
+    public class GetbyIdProjectsQuery:IRequest<ResultViewModel<ProjectViewModel>>
     {
         public int Id { get; set; }
         public int Userid { get; set; }
-        public GetbyIdQuery(int id, int userid)
+        public GetbyIdProjectsQuery(int id, int userid)
         {
             Id = id;
             Userid = userid;

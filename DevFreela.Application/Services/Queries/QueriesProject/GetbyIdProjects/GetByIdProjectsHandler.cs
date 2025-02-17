@@ -15,20 +15,20 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Services.Queries.QueriesProject.GetbyIdProjects
 {
-    public class GetByIdHandler : IRequestHandler<GetbyIdQuery, ResultViewModel<ProjectViewModel>>
+    public class GetByIdProjectsHandler : IRequestHandler<GetbyIdProjectsQuery, ResultViewModel<ProjectViewModel>>
     {
         private readonly DevFreelaDbContext _context;
         private readonly IProjectRepository _repository;
 
-        public GetByIdHandler(IProjectRepository repository)
+        public GetByIdProjectsHandler(IProjectRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task<ResultViewModel<ProjectViewModel>> Handle(GetbyIdQuery request, CancellationToken cancellationToken)
+        public async Task<ResultViewModel<ProjectViewModel>> Handle(GetbyIdProjectsQuery request, CancellationToken cancellationToken)
         {
 
-            Project? project = await _repository.GetDetailsById(request.Id);
+            Project? project = await _repository.GetDetailsById(request.Id,request.Userid);
 
             if (project == null) return ResultViewModel<ProjectViewModel>.Error("projeto não existe!");
 
