@@ -7,6 +7,8 @@ using DevFreela.Application.Services.Commands.CommandSkill.DeleteSkill;
 using DevFreela.Application.Models.Skills;
 using DevFreela.Application.Services.Queries.QueriesSkills.GetAllSkils;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using DevFreela.Application.Services.Queries.QueriesSkills.GetByIdSkill;
 
 namespace DevFreela.API.Controllers
 {
@@ -36,7 +38,7 @@ namespace DevFreela.API.Controllers
         [Authorize]
         public IActionResult GetById(int id)
         {
-            var query = new GetbyIdQuery(id);
+            var query = new GetByIdSkillQuery(id);
             var result = _mediator.Send(query);
             return Ok(result);
         }
