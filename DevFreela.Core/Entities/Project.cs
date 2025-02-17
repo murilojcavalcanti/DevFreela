@@ -5,7 +5,7 @@ namespace DevFreela.Core.Entities
 {
     public class Project:BaseEntity
     {
-        public Project() {   }
+
         public Project(string title, string description, int idClient, int idFreelancer,  decimal totalCost)
             : base()
         {
@@ -17,6 +17,7 @@ namespace DevFreela.Core.Entities
             Status = ProjectStatusEnum.created;
             Comments = [];
         }
+        public const string INVALID_STATE_MESSAGE = "status invalido para o projeto";
         public string Title { get; private set; }
         public string Description { get; private set; }
         public int IdClient { get; private set; }
@@ -40,14 +41,20 @@ namespace DevFreela.Core.Entities
             {
                 Status = ProjectStatusEnum.cancelled;
             }
+            else
+            {
+                throw new InvalidOperationException(INVALID_STATE_MESSAGE);
+            }
         }
         public void Start()
         {
-            if (Status == ProjectStatusEnum.created)
+
+            if (Status != ProjectStatusEnum.created)
             {
-                Status = ProjectStatusEnum.InProgress;
-                StartedAt = DateTime.Now;
+                throw new InvalidOperationException(INVALID_STATE_MESSAGE);
             }
+            Status = ProjectStatusEnum.InProgress;
+            StartedAt = DateTime.Now;
 
         }
         public void Complete()
@@ -57,15 +64,20 @@ namespace DevFreela.Core.Entities
                 Status = ProjectStatusEnum.Completed;
                 CompletedAt = DateTime.Now;
             }
+            else
+            {
+                throw new InvalidOperationException(INVALID_STATE_MESSAGE);
+            }
 
         }
 
         public void SetPaymentPending()
         {
-            if (Status == ProjectStatusEnum.InProgress)
+            if (Status != ProjectStatusEnum.InProgress)
             {
-                Status = ProjectStatusEnum.peymentPending;
+                throw new InvalidOperationException(INVALID_STATE_MESSAGE);
             }
+            Status = ProjectStatusEnum.peymentPending;
         }
 
         public void Update(string title,string description, decimal totalCost)
